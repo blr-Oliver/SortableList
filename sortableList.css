@@ -1,0 +1,12 @@
+.vertical-container{
+	position: relative;
+}
+.vertical-sidebar{
+	float: left;
+	position: absolute;
+	transform: rotate(-90deg) translateX(-100%);
+	transform-origin: left top;
+}
+.vertical-content{
+	padding-left: 34px;
+}
