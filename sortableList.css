@@ -4,9 +4,55 @@
 .vertical-sidebar{
 	float: left;
 	position: absolute;
+	margin: 2px;
+	padding: 0;
 	transform: rotate(-90deg) translateX(-100%);
 	transform-origin: left top;
+	direction: rtl;
 }
 .vertical-content{
-	padding-left: 34px;
+	padding-left: 32px;
+}
+
+.toggler{
+	display: inline-block;
+	padding: 2px;
+    border-width: 2px;
+    border-style: inset outset;
+    border-radius: 1em;
+    border-color: transparent;
+}
+.toggler.active{
+    background-color: #ccc;
+    border-color: #ddd;
+}
+.toggler>.lever{
+	margin: 0;
+    font-size: 14px;
+    font-weight: normal;
+    text-align: center;
+    white-space: nowrap;
+    padding: 0 1em;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border-width: 2px;
+    border-style: outset inset;
+    border-radius: 1em;
+    border-color: #ddd;
+    background-color: #999;
+    color: #fff;
+    text-decoration: none;
+    transition: margin 200ms;
+}
+.toggler.active>.lever.asc{
+	margin-left: 1em;
+}
+.toggler.active>.lever.desc{
+	margin-right: 1em;
 }
