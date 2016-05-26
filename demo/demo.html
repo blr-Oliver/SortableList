@@ -4,6 +4,7 @@
   <script src="https://code.jquery.com/jquery-1.12.3.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css"></link>
+  <script src="../../SortableTable/pagination.js"></script>
   <script src="../sortableList.js"></script>
   <link rel="stylesheet" href="../sortableList.css"></link>
   <script>
@@ -15,21 +16,36 @@
 </head>
 <body>
 
-  <div id="main" class="col-lg-6 collapse in"></div>
+  <div id="main" class="col-lg-6 collapse sortable-list"></div>
 
-  <div class="vertical-container collapse">
+  <div id="main" class="col-lg-6 collapse in sortable-list vertical-container">
     <ul class="vertical-sidebar">
-      <li class="toggler active">
-        <a class="lever desc">Name</a>
-      </li>
-      <li class="toggler">
-        <a class="lever">Surname</a>
-      </li>
+      <li class="toggler"><a class="lever" data-field="name">Name</a></li>
+      <li class="toggler active"><a class="lever desc" data-field="surname">Surname</a></li>
+      <li class="toggler"><a class="lever" data-field="wealth">Wealth</a></li>
     </ul>
-    <ul class="vertical-content list-group">
-      <li class="list-group-item">Bill Gates owns 77.6 billion $</li>
-      <li class="list-group-item">Warren Buffett owns 67.3 billion $</li>
-    </ul>
+    <div class="vertical-content">
+      <ul class="list-group">
+        <li class="list-group-item">Bill Gates owns 77.6 billion $</li>
+        <li class="list-group-item">Warren Buffett owns 67.3 billion $</li>
+        <li class="list-group-item">Jeff Bezos owns 52.3 billion $</li>
+        <li class="list-group-item">Larry Ellison owns 50.1 billion $</li>
+        <li class="list-group-item">Mark Zuckerberg owns 49.1 billion $</li>
+        <li class="list-group-item">Michael Bloomberg owns 43.7 billion $</li>
+        <li class="list-group-item">Charles Koch owns 43 billion $</li>
+        <li class="list-group-item">David Koch owns 43 billion $</li>
+        <li class="list-group-item">Larry Page owns 37.8 billion $</li>
+        <li class="list-group-item">Sergey Brin owns 36.9 billion $</li>
+      </ul>
+
+      <ul class="pagination">
+        <li class="disabled"><a href="#" class="previous">«</a></li>
+        <li class="active"><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#" class="next">»</a></li>
+      </ul>
+    </div>
   </div>
+
 </body>
 </html>
