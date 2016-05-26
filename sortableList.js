@@ -18,15 +18,27 @@ SortableList.prototype = {
   },
 
   renderList: function() {
-    $("<ul>").addClass('list-group vertical-content').appendTo(this.root);
+
+    var div = $("<div>").addClass('vertical-content').appendTo(this.root);
+    $("<ul>").addClass('list-group').appendTo(div);
+    var paginationRoot = $("<ul>").appendTo(div);
+    this.pagination = new Pagination({
+      root: paginationRoot 
+    },{
+      size: 10,
+      total: this.data.length
+    });
+    this.pagination.onpage = function(page){
+      this.refreshList();
+    }.bind(this);
     this.refreshList();
   },
 
   refreshList: function() {
-    var ul = this.root.find(".vertical-content").empty();
-
-    for(var i = 0; i < this.data.length; i++){
-      var obj = this.data[i];
+    var ul = this.root.find(".vertical-content>ul:first-child").empty();
+    var data = this.data.slice(this.pagination.page() * this.pagination.size(), (this.pagination.page() + 1) * this.pagination.size());
+    for(var i = 0; i < data.length; i++){
+      var obj = data[i];
       var str = obj.name + ' ' + obj.surname + ' owns ' + obj.wealth + ' billion $';
       $("<li>").text(str).addClass('list-group-item').appendTo(ul);
     }
