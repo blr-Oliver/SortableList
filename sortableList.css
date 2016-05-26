@@ -17,6 +17,10 @@
   padding-left: 28px;
 }
 
+.vertical-content .list-group {
+    margin-bottom: 0;
+}
+
 .toggler {
   display: inline-block;
   background-color: #ccc;
