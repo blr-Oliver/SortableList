@@ -1,9 +1,8 @@
-.vertical-container {
+.sortable-list {
   position: relative;
 }
 
-.vertical-sidebar {
-  float: left;
+.sortable-list>.sidebar {
   position: absolute;
   margin: 0 0 4px 0;
   padding: 0;
@@ -13,12 +12,16 @@
   white-space: nowrap;
 }
 
-.vertical-content {
+.sortable-list>.display {
   padding-left: 28px;
 }
 
-.vertical-content .list-group {
-    margin-bottom: 0;
+.sortable-list .content {
+  position: relative;
+}
+
+.sortable-list *+.pagination {
+  margin-top: 0;
 }
 
 .toggler {
@@ -59,4 +62,19 @@
 
 .toggler.active>.lever.desc {
   margin-right: 1.5em;
+}
+
+.sortable-list.loading .content::after {
+  content: ' ';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.05);
+  background-image:
+    url(http://www.lettersmarket.com/uploads/lettersmarket/blog/loaders/common_gray/ajax_loader_gray_64.gif);
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: wait;
 }
