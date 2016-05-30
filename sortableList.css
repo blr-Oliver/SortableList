@@ -36,12 +36,9 @@
 .toggler>.lever {
   margin: 0;
   font-size: 14px;
-  font-weight: normal;
   text-align: center;
   white-space: nowrap;
   padding: 3px 1em;
-  -ms-touch-action: manipulation;
-  touch-action: manipulation;
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;
