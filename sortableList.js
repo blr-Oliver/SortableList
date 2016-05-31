@@ -1,6 +1,6 @@
-function SortableList(root, data){
+function SortableList(root, loader){
   this.root = $(root);
-  this.allData = data;
+  this.loader = loader;
   this.pageSize = 10;
   this.state = {
     sort: ''
@@ -64,14 +64,37 @@ SortableList.prototype = $.extend(Object.create(Emitter.prototype), {
   },
 
   updateData: function(){
-    var allData = this.allData;
-    var pgn = this.pagination;
-    pgn.count(Math.ceil(allData.length / this.pageSize));
-    if(this.state.sort)
-      allData = this.sortByField(allData, this.state.sort);
-    var start = pgn.page() * this.pageSize;
-    this.data = allData.slice(start, start + this.pageSize);
-    this.refreshList();
+    var params = {
+      start: this.pagination.page() * this.pageSize,
+      count: this.pageSize,
+      sort: this.state.sort
+    }
+    var self = this;
+    var request = this.loader.load(params);
+    if(this.state.loading)
+      this.state.loading.abort();
+    this.state.loading = request;
+    this.refreshLoading();
+    request.done(function(response){
+      var allData = response;
+      var pgn = self.pagination;
+      pgn.count(Math.ceil(allData.length / self.pageSize));
+      if(self.state.sort)
+        allData = self.sortByField(allData, self.state.sort);
+      var start = pgn.page() * self.pageSize;
+      self.data = allData.slice(start, start + self.pageSize);
+      self.refreshList();
+      self.state.loading = null;
+      self.refreshLoading();
+    })
+  },
+
+  refreshLoading: function(){
+    if(this.state.loading)
+      this.root.addClass('loading');
+    else{
+      this.root.removeClass('loading');
+    }
   },
 
   sort: function(sort){
@@ -166,8 +189,8 @@ SortableList.prototype = $.extend(Object.create(Emitter.prototype), {
     case 40: //down arrow
       this.sort('-' + field);
       break;
-    case 13:
-    case 32:
+    case 13: //enter 
+    case 32: //space
       this.toggleSort(field);
     }
   }
