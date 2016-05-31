@@ -42,12 +42,14 @@ SortableList.prototype = $.extend(Object.create(Emitter.prototype), {
 
   renderSort: function(){
     var buttons = ["Name", "Surname", "Wealth"];
-    var div = $('<ul class="sidebar">').appendTo(this.root);
+    var sidebar = $('<ul class="sidebar">').appendTo(this.root);
     for (var j = 0; j < buttons.length; j++){
       $('<a class="lever" role="button">').html(buttons[j]).appendTo($('<li class="toggler" tabindex="0">')
-          .attr("data-field", buttons[j].toLowerCase()).appendTo(div));
+          .attr("data-field", buttons[j].toLowerCase()).appendTo(sidebar));
     }
-    div.click(this.onSortClick.bind(this));
+    sidebar.on('click', this._onsortclick.bind(this));
+    sidebar.on('mousedown', this._onsortmousedown.bind(this));
+    sidebar.on('keydown', this._onsortkeydown.bind(this));
     this.refreshSort();
   },
 
@@ -72,18 +74,6 @@ SortableList.prototype = $.extend(Object.create(Emitter.prototype), {
     this.refreshList();
   },
 
-  onSortClick: function(event){
-    var target = $(event.target);
-    if(target.is('a'))
-      target = target.parent();
-    if(target.is('li')){
-      var field = target.attr('data-field');
-      var sort = this.sort();
-      sort = ((sort && sort.substr(1) == field && sort[0] == '+') ? '-' : '+') + field;
-      this.sort(sort);
-    }
-  },
-
   sort: function(sort){
     if(arguments.length){
       if(this.state.sort != sort){
@@ -97,10 +87,22 @@ SortableList.prototype = $.extend(Object.create(Emitter.prototype), {
       return this.state.sort;
   },
 
-  getField: function(obj, path){
+  toggleSort: function(field){
+    var sort = this.sort();
+    sort = ((sort && sort.substr(1) == field && sort[0] == '+') ? '-' : '+') + field;
+    this.sort(sort);
+  },
+
+  _getField: function(obj, path){
     return path.split('.').reduce(function(obj, prop){
       return (obj || undefined) && obj[prop];
     }, obj);
+  },
+  
+  getField: function(obj, path){
+    return function(){
+      return eval('this.' + path);
+    }.call(obj);
   },
 
   sortByField: function(a, field){
@@ -121,6 +123,52 @@ SortableList.prototype = $.extend(Object.create(Emitter.prototype), {
       }
       return 0;
     });
-  }
+  },
 
+  _onsortclick: function(event){
+    var target = $(event.target);
+    if(target.is('a'))
+      target = target.parent();
+    if(target.is('li'))
+      this.toggleSort(target.attr('data-field'));
+  },
+
+  _onsortmousedown: function(event){
+    var target = $(event.target);
+    if(target.is('a'))
+      target = target.parent();
+    if(target.is('li'))
+      event.preventDefault();
+  },
+
+  _onsortkeydown: function(event){
+    var field = event.target.getAttribute('data-field');
+    if(event.keyCode >= 35 && event.keyCode <= 40 || event.keyCode == 13 || event.keyCode == 32)
+      event.preventDefault();
+    switch (event.keyCode) {
+    case 35: //end
+      event.target.parentElement.lastElementChild.focus();
+      break;
+    case 36: //home
+      event.target.parentElement.firstElementChild.focus();
+      break;
+    case 37: //left arrow
+      if(event.target.previousElementSibling)
+        event.target.previousElementSibling.focus();
+      break;
+    case 38: //up arrow
+      this.sort('+' + field);
+      break;
+    case 39: //right arrow
+      if(event.target.nextElementSibling)
+        event.target.nextElementSibling.focus();
+      break;
+    case 40: //down arrow
+      this.sort('-' + field);
+      break;
+    case 13:
+    case 32:
+      this.toggleSort(field);
+    }
+  }
 });
